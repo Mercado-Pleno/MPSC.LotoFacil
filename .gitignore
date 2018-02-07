@@ -1,0 +1,13 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/MPSC.LotoFacil.AppWeb/obj
+/MPSC.LotoFacil.Domain/bin/Debug/netcoreapp2.0
+/MPSC.LotoFacil.AppWeb/bin/Debug/netcoreapp2.0
+/MPSC.LotoFacil.Domain/obj
+/MPSC.LotoFacil.Teste.Unitario/bin/Debug/netcoreapp2.0
+/MPSC.LotoFacil.Teste.Unitario/obj/Debug/netcoreapp2.0
+/packages
+/MPSC.LotoFacil.Teste.Unitario/obj
