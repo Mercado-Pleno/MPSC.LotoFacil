@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.LotoFacil.AppWeb", "MPSC.LotoFacil.AppWeb\MPSC.LotoFacil.AppWeb.csproj", "{60BBB14C-4855-47E1-A688-A414EE00883B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSC.LotoFacil.AppWeb", "MPSC.LotoFacil.AppWeb\MPSC.LotoFacil.AppWeb.csproj", "{60BBB14C-4855-47E1-A688-A414EE00883B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.LotoFacil.Domain", "MPSC.LotoFacil.Domain\MPSC.LotoFacil.Domain.csproj", "{A8A6649F-6C44-40FB-A775-87502C431A97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSC.LotoFacil.Domain", "MPSC.LotoFacil.Domain\MPSC.LotoFacil.Domain.csproj", "{A8A6649F-6C44-40FB-A775-87502C431A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPSC.LotoFacil.Teste.Unitario", "MPSC.LotoFacil.Teste.Unitario\MPSC.LotoFacil.Teste.Unitario.csproj", "{CA7B48BB-CACF-4052-8021-3A61F3680CF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MPSC.LotoFacil.Teste.Unitario", "MPSC.LotoFacil.Teste.Unitario\MPSC.LotoFacil.Teste.Unitario.csproj", "{CA7B48BB-CACF-4052-8021-3A61F3680CF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
