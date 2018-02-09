@@ -8,18 +8,14 @@ namespace MPSC.LotoFacil.Teste.Unitario
 	[TestClass]
 	public class TestandoCartaoDeAposta
 	{
-
 		[TestMethod]
 		public void QuandoSolicitaGeracaoDeJogos()
 		{
-			var quantidadeDeJogos = 400;
+			var numerosSorteados = new[] { 01, 02, 04, 07, 09, 10, 11, 12, 13, 14, 18, 20, 21, 24, 25 };
+			var quantidadeDeJogos = 500;
 			var quantidadeDeNumerosPorJogo = 15;
 			var sorteiosPorLinha = new Int32[] { 3, 2, 4, 0, 0 };
-			var numerosEscolhidos = new Numero[]
-			{
-				new Numero(20),
-				new Numero(25),
-			};
+			var numerosEscolhidos = new Int32[] { 18, 20, 21, 24, 25 };
 
 			var cartaoDeAposta = new CartaoDeAposta(quantidadeDeJogos: quantidadeDeJogos, quantidadeDeNumerosPorJogo: quantidadeDeNumerosPorJogo);
 			var jogos = cartaoDeAposta.GerarJogos(sorteiosPorLinha, numerosEscolhidos);
@@ -27,16 +23,16 @@ namespace MPSC.LotoFacil.Teste.Unitario
 			Assert.AreEqual(quantidadeDeJogos, jogos.Count);
 			Assert.IsTrue(jogos.All(j => j.QuantidadeDeNumeros == quantidadeDeNumerosPorJogo));
 
-			//foreach (var jogo in jogos) Console.WriteLine(jogo.ToString());
 
-			var resultado = new[] { 01, 02, 04, 07, 09, 10, 11, 12, 13, 14, 18, 20, 21, 24, 25 };
+			var resultados = jogos.Select(j => j.Conferir(numerosSorteados)).ToArray();
+			Console.WriteLine("{0} - {1} = {2}\r\n",
+				resultados.Sum(r => r.Premio).ToString("0.00"),
+				resultados.Sum(r => r.Aposta).ToString("0.00"),
+				resultados.Sum(r => r.Lucro).ToString("0.00")
+			);
 
-			var acertos = jogos.Where(j => j.Conferir(resultado) > 0);
-			Console.WriteLine("{0}\r\n\r\n", acertos.Sum(j => j.Conferir(resultado)).ToString("0.00"));
-
-
-			foreach (var jogo in acertos)
-				Console.WriteLine("{0} -> {1}", jogo.Conferir(resultado).ToString("0.00"), jogo.ToString());
+			foreach (var resultado in resultados.Where(r => r.Acertos > 10))
+				Console.WriteLine("{0} -> {1}", resultado.Premio.ToString("0.00"), resultado.Jogo.ToString());
 		}
 	}
 }
