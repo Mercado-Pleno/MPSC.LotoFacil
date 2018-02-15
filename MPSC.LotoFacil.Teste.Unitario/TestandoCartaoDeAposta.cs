@@ -33,6 +33,51 @@ namespace MPSC.LotoFacil.Teste.Unitario
 			);
 		}
 
+		[TestMethod]
+		public void QuandoSolicitaGeracaoDe200JogosDe15NumerosSemParametrosEspeciaisEscolhendo1NumeroFavorito()
+		{
+			QuandoSolicitaGeracaoDeJogos(
+				quantidadeDeJogos: 200,
+				quantidadeDeNumerosPorJogo: 15,
+				sorteiosPorLinha: new Int32[] { 0, 0, 0, 0, 0 },
+				numerosEscolhidos: new Int32[] { 24 }
+			);
+		}
+
+		[TestMethod]
+		public void QuandoSolicitaGeracaoDe200JogosDe15NumerosDefinindoQtdDeSorteiosPorLinhaEscolhendo1NumeroFavorito()
+		{
+			QuandoSolicitaGeracaoDeJogos(
+				quantidadeDeJogos: 200,
+				quantidadeDeNumerosPorJogo: 15,
+				sorteiosPorLinha: new Int32[] { 3, 3, 4, 2, 2 },
+				numerosEscolhidos: new Int32[] { 24 }
+			);
+		}
+
+
+		[TestMethod]
+		public void QuandoSolicitaGeracaoDe200JogosDe15NumerosSemParametrosEspeciaisEscolhendo2NumerosFavoritos()
+		{
+			QuandoSolicitaGeracaoDeJogos(
+				quantidadeDeJogos: 200,
+				quantidadeDeNumerosPorJogo: 15,
+				sorteiosPorLinha: new Int32[] { 0, 0, 0, 0, 0 },
+				numerosEscolhidos: new Int32[] { 24, 25 }
+			);
+		}
+
+		[TestMethod]
+		public void QuandoSolicitaGeracaoDe200JogosDe15NumerosDefinindoQtdDeSorteiosPorLinhaEscolhendo2NumerosFavoritos()
+		{
+			QuandoSolicitaGeracaoDeJogos(
+				quantidadeDeJogos: 200,
+				quantidadeDeNumerosPorJogo: 15,
+				sorteiosPorLinha: new Int32[] { 3, 3, 4, 2, 1 },
+				numerosEscolhidos: new Int32[] { 24, 25 }
+			);
+		}
+
 		public void QuandoSolicitaGeracaoDeJogos(Int32 quantidadeDeJogos, Int32 quantidadeDeNumerosPorJogo, IEnumerable<Int32> sorteiosPorLinha, IEnumerable<Int32> numerosEscolhidos)
 		{
 			var cartaoDeAposta = new CartaoDeAposta(quantidadeDeJogos: quantidadeDeJogos, quantidadeDeNumerosPorJogo: quantidadeDeNumerosPorJogo);
@@ -42,10 +87,11 @@ namespace MPSC.LotoFacil.Teste.Unitario
 			Assert.IsTrue(jogos.All(j => j.QuantidadeDeNumeros == quantidadeDeNumerosPorJogo));
 
 			var resultados = jogos.Select(j => j.Conferir(numerosSorteados)).ToArray();
-			Console.WriteLine("{0} - {1} = {2} ({3} acertos)\r\n",
+			Console.WriteLine("{0} - {1} = {2} ({3} jogos / {4} acertos)\r\n",
 				resultados.Sum(r => r.Premio).ToString("0.00"),
 				resultados.Sum(r => r.Aposta).ToString("0.00"),
 				resultados.Sum(r => r.Lucro).ToString("0.00"),
+				resultados.Length,
 				resultados.Count(r => r.Lucro > 0)
 			);
 
