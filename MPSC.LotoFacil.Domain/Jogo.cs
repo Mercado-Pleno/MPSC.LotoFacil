@@ -7,7 +7,7 @@ namespace MPSC.LotoFacil.Domain
 	public class Jogo
 	{
 		private readonly List<Int32> _numeros;
-		private IEnumerable<Int32> Numeros { get { return _numeros; } }
+		public IEnumerable<Int32> Numeros { get { return _numeros; } }
 		public Int32 QuantidadeDeNumeros { get { return _numeros.Count; } }
 
 		public Jogo(IEnumerable<Int32> numerosEscolhidos)

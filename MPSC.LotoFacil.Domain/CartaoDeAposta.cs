@@ -12,28 +12,27 @@ namespace MPSC.LotoFacil.Domain
 		public static readonly Dictionary<Int32, Decimal> TabelaPremio =
 			new Dictionary<Int32, Decimal>() { { 11, 4M }, { 12, 08M }, { 13, 020M }, { 14, 3000M }, { 15, 50000M } };
 
-		private readonly Linha[] Linhas;
+		private readonly Int32 Linhas;
+		private readonly Int32 Colunas;
 		private readonly Int32 QuantidadeDeJogos;
 		private readonly Int32 QuantidadeDeNumerosPorJogo;
-		private Int32[] SorteiosPorLinha;
-		private Int32[] NumerosEscolhidos;
 
 		public CartaoDeAposta(Int32 quantidadeDeJogos, Int32 quantidadeDeNumerosPorJogo, Int32 linhas = 5, Int32 colunas = 5)
 		{
-			Linhas = Linha.GerarCartao(linhas, colunas);
+			Linhas = linhas;
+			Colunas = colunas;
 			QuantidadeDeJogos = quantidadeDeJogos;
 			QuantidadeDeNumerosPorJogo = quantidadeDeNumerosPorJogo;
 		}
 
 		public List<Jogo> GerarJogos(IEnumerable<Int32> sorteiosPorLinha, IEnumerable<Int32> numerosEscolhidos)
 		{
+			var random = new Random(Convert.ToInt32(DateTime.Now.Ticks % 10000000));
 			var listaJogos = new List<Jogo>();
-			SorteiosPorLinha = sorteiosPorLinha.ToArray();
-			NumerosEscolhidos = numerosEscolhidos.ToArray();
 
 			while (listaJogos.Count < QuantidadeDeJogos)
 			{
-				var novoJogo = GerarJogo();
+				var novoJogo = GerarJogo(sorteiosPorLinha.ToArray(), numerosEscolhidos, random);
 				if (!listaJogos.Any(j => j.Igual(novoJogo)))
 					listaJogos.Add(novoJogo);
 			}
@@ -41,20 +40,64 @@ namespace MPSC.LotoFacil.Domain
 			return listaJogos.OrderBy(j => j.ToString()).ToList();
 		}
 
-		private Jogo GerarJogo()
+		private Jogo GerarJogo(Int32[] sorteiosPorLinha, IEnumerable<Int32> numerosEscolhidos, Random random)
 		{
-			var jogo = new Jogo(NumerosEscolhidos);
-			var rand = new Random(Convert.ToInt32(DateTime.Now.Ticks % 10000000));
+			var jogo = new Jogo(numerosEscolhidos);
+
 			while (jogo.QuantidadeDeNumeros < QuantidadeDeNumerosPorJogo)
 			{
-				//var linha = rand.Next(0, Linhas.Length);
-				//var coluna = rand.Next(0, Linhas[linha].Numeros.Length);
+				var linha = SortearLinha(random);
 
-				var numero = rand.Next(1, 26);
-
-				jogo.Adicionar(numero);
+				if (LinhaAindaPodeSerSorteada(sorteiosPorLinha, linha))
+				{
+					ReduzirQuantidadeDisponivelParaSorteio(sorteiosPorLinha, linha);
+					var numero = SortearNumero(random, linha);
+					jogo.Adicionar(numero);
+				}
 			}
+
 			return jogo;
+		}
+
+		private Int32 SortearLinha(Random random)
+		{
+			return random.Next(0, Linhas);
+		}
+
+		private Int32 SortearNumero(Random random, Int32 linha)
+		{
+			var coluna = random.Next(0, Colunas);
+			return (linha * Linhas) + (coluna + 1);
+		}
+
+		private Boolean LinhaAindaPodeSerSorteada(Int32[] sorteiosPorLinha, Int32 linha)
+		{
+			return PossuiAlgumNumeroDisponivelParaSorteio(sorteiosPorLinha, linha) ||
+			(
+				ALinhaPermiteSerSorteada(sorteiosPorLinha, linha) &&
+				AsLinhasNaoPossuemOutrosNumerosDisponiveisParaSorteio(sorteiosPorLinha)
+			);
+		}
+
+		private Boolean PossuiAlgumNumeroDisponivelParaSorteio(Int32[] sorteiosPorLinha, Int32 linha)
+		{
+			return (sorteiosPorLinha[linha] > 0);
+		}
+
+		private Boolean ALinhaPermiteSerSorteada(Int32[] sorteiosPorLinha, Int32 linha)
+		{
+			return (sorteiosPorLinha[linha] >= 0);
+		}
+
+		private Boolean AsLinhasNaoPossuemOutrosNumerosDisponiveisParaSorteio(Int32[] sorteiosPorLinha)
+		{
+			return sorteiosPorLinha.All(q => q <= 0);
+		}
+
+		private void ReduzirQuantidadeDisponivelParaSorteio(Int32[] sorteiosPorLinha, Int32 linha)
+		{
+			if (PossuiAlgumNumeroDisponivelParaSorteio(sorteiosPorLinha, linha))
+				sorteiosPorLinha[linha]--;
 		}
 	}
 }
